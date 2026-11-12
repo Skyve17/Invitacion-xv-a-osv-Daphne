@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#061810" />
+  <title>Mis XV Años - Daphne | 20 de Marzo 2027</title>
+
+  <!-- Metadatos para compartir en WhatsApp / Redes Sociales -->
+  <meta property="og:title" content="✨ Mis XV Años - Daphne " />
+  <meta property="og:description" content="Laura y Jonas te invitan a celebrar los XV años de Daphne este 20 de Marzo de 2027 en Salón Toscana Jardín de Eventos." />
+  <meta property="og:image" content="assets/ornament-flores.png" />
+  <meta property="og:type" content="website" />
+
+  <!-- Tipografías de Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Definiciones SVG reutilizables: Mariposas Doradas, Flores Rositas y Estrellas -->
+  <svg width="0" height="0" style="position:absolute; visibility:hidden;" aria-hidden="true">
+    <defs>
+      <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#b88924" />
+        <stop offset="30%" stop-color="#fff0b3" />
+        <stop offset="55%" stop-color="#d4a638" />
+        <stop offset="80%" stop-color="#fff5cc" />
+        <stop offset="100%" stop-color="#9c7014" />
+      </linearGradient>
+
+      <linearGradient id="pinkRoseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#fde8ef" />
+        <stop offset="50%" stop-color="#f5b0c6" />
+        <stop offset="100%" stop-color="#d66b8d" />
+      </linearGradient>
+
+      <linearGradient id="emeraldLeafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#2c6e4d" />
+        <stop offset="100%" stop-color="#0f3322" />
+      </linearGradient>
+
+      <!-- Símbolo: Mariposa Dorada Filigrana -->
+      <symbol id="golden-butterfly" viewBox="0 0 100 100">
+        <!-- Ala superior izquierda -->
+        <path d="M48,50 C35,20 8,10 6,30 C4,46 25,54 48,53 Z" fill="url(#goldGrad)" opacity="0.92" />
+        <path d="M44,47 C32,26 14,20 12,32 C11,42 28,48 44,47 Z" fill="#082015" opacity="0.55" />
+        <circle cx="18" cy="28" r="2.2" fill="#fff6d1" />
+        <circle cx="26" cy="35" r="1.5" fill="#fff6d1" />
+        <!-- Ala superior derecha -->
+        <path d="M52,50 C65,20 92,10 94,30 C96,46 75,54 52,53 Z" fill="url(#goldGrad)" opacity="0.92" />
+        <path d="M56,47 C68,26 86,20 88,32 C89,42 72,48 56,47 Z" fill="#082015" opacity="0.55" />
+        <circle cx="82" cy="28" r="2.2" fill="#fff6d1" />
+        <circle cx="74" cy="35" r="1.5" fill="#fff6d1" />
+        <!-- Ala inferior izquierda -->
+        <path d="M48,54 C30,56 14,70 22,84 C29,94 44,80 48,57 Z" fill="url(#goldGrad)" opacity="0.88" />
+        <circle cx="29" cy="76" r="1.8" fill="#fff6d1" />
+        <!-- Ala inferior derecha -->
+        <path d="M52,54 C70,56 86,70 78,84 C71,94 56,80 52,57 Z" fill="url(#goldGrad)" opacity="0.88" />
+        <circle cx="71" cy="76" r="1.8" fill="#fff6d1" />
+        <!-- Cuerpo y antenas -->
+        <ellipse cx="50" cy="54" rx="2.3" ry="14" fill="url(#goldGrad)" />
+        <path d="M49,40 Q42,26 35,24" stroke="url(#goldGrad)" stroke-width="1.5" fill="none" stroke-linecap="round" />
+        <path d="M51,40 Q58,26 65,24" stroke="url(#goldGrad)" stroke-width="1.5" fill="none" stroke-linecap="round" />
+      </symbol>
+
+      <!-- Símbolo: Esquina de Flores Rositas y Hojas Verdes/Doradas -->
+      <symbol id="pink-floral-corner" viewBox="0 0 120 120">
+        <!-- Hojas esmeralda y ramas doradas -->
+        <path d="M12,105 Q15,50 65,18" stroke="url(#goldGrad)" stroke-width="2" fill="none" />
+        <path d="M18,75 C5,62 8,42 26,48 C24,62 20,70 18,75 Z" fill="url(#emeraldLeafGrad)" stroke="url(#goldGrad)" stroke-width="1" />
+        <path d="M48,30 C38,14 55,4 68,16 C60,24 54,28 48,30 Z" fill="url(#emeraldLeafGrad)" stroke="url(#goldGrad)" stroke-width="1" />
+        <path d="M42,68 C58,64 68,48 52,40 C44,50 42,60 42,68 Z" fill="url(#emeraldLeafGrad)" stroke="url(#goldGrad)" stroke-width="1" />
+        <!-- Rosa Rosita Principal -->
+        <g transform="translate(34, 34)">
+          <circle cx="0" cy="0" r="18" fill="url(#pinkRoseGrad)" />
+          <path d="M-12,-6 C-6,-16 8,-16 12,-5 C16,6 6,15 -6,13 C-15,11 -16,2 -12,-6 Z" fill="#f9cedc" opacity="0.85" />
+          <path d="M-7,-3 C-3,-10 6,-9 8,-2 C10,4 3,9 -4,8 C-9,6 -9,1 -7,-3 Z" fill="#e67f9f" />
+          <path d="M-3,-1 C0,-5 4,-3 4,1 C4,4 -1,5 -3,2 Z" fill="#fff0f5" />
+        </g>
+        <!-- Capullos rositas -->
+        <g transform="translate(74, 18)">
+          <circle cx="0" cy="0" r="9" fill="url(#pinkRoseGrad)" />
+          <circle cx="-1" cy="-1" r="4.5" fill="#fde8ef" />
+        </g>
+        <g transform="translate(18, 82)">
+          <circle cx="0" cy="0" r="9.5" fill="url(#pinkRoseGrad)" />
+          <circle cx="1" cy="-1" r="4.5" fill="#fde8ef" />
+        </g>
+        <!-- Estrellitas doradas -->
+        <path d="M88,32 L90,37 L95,39 L90,41 L88,46 L86,41 L81,39 L86,37 Z" fill="url(#goldGrad)" />
+        <circle cx="62" cy="52" r="2" fill="#fff3c4" />
+        <circle cx="28" cy="96" r="2" fill="#fff3c4" />
+      </symbol>
+
+      <!-- Símbolo: Estrella Encantada -->
+      <symbol id="magic-star" viewBox="0 0 40 40">
+        <path d="M20,2 L23.5,16.5 L38,20 L23.5,23.5 L20,38 L16.5,23.5 L2,20 L16.5,16.5 Z" fill="url(#goldGrad)" />
+        <circle cx="20" cy="20" r="3" fill="#ffffff" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Fondo Fijo del Bosque Encantado -->
+  <div class="forest-backdrop" aria-hidden="true">
+    <div class="forest-backdrop-img"></div>
+    <div class="forest-vignette"></div>
+  </div>
+
+  <!-- Lienzo de Partículas: Estrellas Titilantes, Polvo de Hadas Dorado y Pétalos Rositas -->
+  <canvas id="magic-canvas" aria-hidden="true"></canvas>
+
+  <!-- ========================================================================
+       PANTALLA DE BIENVENIDA / SOBRE DEL BOSQUE ENCANTADO
+       ======================================================================== -->
+  <div id="envelope-screen" class="envelope-overlay" role="dialog" aria-label="Abrir invitación de XV años de Daphne">
+    <div class="envelope-top-ornament">
+      <img src="assets/ornament-flores.png" alt="Emblema de Flores Rosas y Mariposas Doradas" class="ornament-crest-img" style="width:135px; height:135px; margin-bottom:0;" />
+    </div>
+
+    <div class="envelope-content">
+      <p class="envelope-subtitle">✨ Bienvenidos al Bosque Encantado ✨</p>
+      <div class="envelope-xv-badge">MIS XV AÑOS</div>
+      <h1 class="envelope-title">Daphne</h1>
+      <p class="envelope-hint">“Donde las flores rositas despiertan, las mariposas doradas guían el camino y las estrellas iluminan mis sueños...”</p>
+
+      <button id="open-invitation-btn" class="seal-button" aria-label="Tocar para abrir la invitación">
+        <svg class="seal-butterfly-svg"><use href="#golden-butterfly"></use></svg>
+      </button>
+      <span class="seal-cta">Toca la mariposa para entrar</span>
+    </div>
+
+    <div class="envelope-subtitle" style="opacity:0.8; font-size:0.68rem;">
+      20 • MARZO • 2027
+    </div>
+  </div>
+
+  <!-- Controles Flotantes: Música Ambiental y Vista en Celular -->
+  <div class="floating-controls">
+    <button id="music-toggle-btn" class="floating-btn" title="Activar / Pausar melodía del bosque" aria-label="Música de fondo">
+      <div class="music-waves">
+        <span></span><span></span><span></span><span></span>
+      </div>
+    </button>
+  </div>
+
+  <button id="qr-open-btn" class="qr-desktop-trigger" title="Escanea para ver en tu celular">
+    <span>📱</span>
+    <span>Ver en mi Celular</span>
+  </button>
+
+  <!-- ========================================================================
+       CONTENEDOR MÓVIL PRINCIPAL DE LA INVITACIÓN
+       ======================================================================== -->
+  <div class="mobile-viewport">
+    <main class="invitation-main">
+
+      <!-- 1. PORTADA / HERO -->
+      <section class="section hero-section">
+        <div class="hero-center" style="width:100%;">
+          <div class="enchanted-arch">
+            <svg class="card-corner-floral top-left"><use href="#pink-floral-corner"></use></svg>
+            <svg class="card-corner-floral bottom-right"><use href="#pink-floral-corner"></use></svg>
+            <svg class="perched-butterfly right"><use href="#golden-butterfly"></use></svg>
+
+            <!-- Corona de Estrellas y Mariposa -->
+            <svg class="crown-stars-svg" viewBox="0 0 160 60">
+              <use href="#magic-star" x="15" y="22" width="18" height="18" />
+              <use href="#magic-star" x="38" y="10" width="22" height="22" />
+              <use href="#golden-butterfly" x="62" y="2" width="36" height="36" />
+              <use href="#magic-star" x="100" y="10" width="22" height="22" />
+              <use href="#magic-star" x="127" y="22" width="18" height="18" />
+              <path d="M20,48 Q80,34 140,48" stroke="url(#goldGrad)" stroke-width="1.2" fill="none" opacity="0.7" />
+            </svg>
+
+            <p class="hero-eyebrow">Mis XV Años</p>
+            <h2 class="hero-name">Daphne</h2>
+
+            <div class="hero-theme-tag">
+              <span>🦋</span>
+              <span>Bosque Encantado</span>
+              <span>🌸</span>
+            </div>
+
+            <div class="hero-date-Lockup">
+              <div class="date-side">Sábado</div>
+              <div class="date-number-box">
+                <span class="date-day">20</span>
+                <span class="date-year">2027</span>
+              </div>
+              <div class="date-side">Marzo</div>
+            </div>
+
+            <p style="font-size:0.95rem; color:var(--pink-light); margin-top:12px; font-style:italic;">
+              Salón Toscana Jardín de Eventos
+            </p>
+          </div>
+        </div>
+
+        <div class="scroll-indicator">
+          <span>Desliza hacia abajo</span>
+          <span style="font-size:1.1rem;">✨ ↓ ✨</span>
+        </div>
+      </section>
+
+      <!-- 2. MENSAJE Y PADRES (LAURA Y JONAS) -->
+      <section class="section reveal">
+        <div class="enchanted-card">
+          <svg class="card-corner-floral top-left"><use href="#pink-floral-corner"></use></svg>
+          <svg class="card-corner-floral bottom-right"><use href="#pink-floral-corner"></use></svg>
+          <svg class="perched-butterfly left"><use href="#golden-butterfly"></use></svg>
+
+          <img src="assets/ornament-flores.png" alt="Flores rositas y mariposas doradas" class="ornament-crest-img" />
+
+          <h3 class="section-script-title">Un Sueño Hecho Realidad</h3>
+          <p class="section-subtitle">✨ Bajo un cielo de estrellas ✨</p>
+
+          <p class="quote-text">
+            “Hay momentos en la vida que se sueñan, se esperan y se guardan en el corazón para siempre. Hoy las flores rositas se abren y las mariposas doradas alzan el vuelo para celebrar mis quince primaveras.”
+          </p>
+
+          <div class="parents-box">
+            <p class="parents-label">Con la bendición de Dios y el amor de mis padres</p>
+            <div class="parent-names">
+              <span class="parent-name">Laura</span>
+              <span class="parent-amp">&amp;</span>
+              <span class="parent-name">Jonas</span>
+            </div>
+          </div>
+
+          <p style="margin-top:18px; font-size:1.08rem; color:var(--text-soft); line-height:1.55;">
+            Tenemos el honor de invitarte a compartir con nosotros una noche mágica e inolvidable.
+          </p>
+        </div>
+      </section>
+
+      <!-- 3. CUENTA REGRESIVA AL 20 DE MARZO DE 2027 -->
+      <section class="section reveal">
+        <div class="enchanted-card">
+          <svg class="card-corner-floral top-left"><use href="#pink-floral-corner"></use></svg>
+          <svg class="card-corner-floral bottom-right"><use href="#pink-floral-corner"></use></svg>
+          <svg class="perched-butterfly right"><use href="#golden-butterfly"></use></svg>
+
+          <h3 class="section-script-title">Falta Muy Poco</h3>
+          <p class="section-subtitle">Sábado • 20 de Marzo de 2027</p>
+
+          <div class="countdown-grid" id="countdown-container" aria-live="polite">
+            <div class="countdown-item">
+              <div class="countdown-number" id="cd-days">000</div>
+              <div class="countdown-label">Días</div>
+            </div>
+            <div class="countdown-item">
+              <div class="countdown-number" id="cd-hours">00</div>
+              <div class="countdown-label">Horas</div>
+            </div>
+            <div class="countdown-item">
+              <div class="countdown-number" id="cd-mins">00</div>
+              <div class="countdown-label">Minutos</div>
+            </div>
+            <div class="countdown-item">
+              <div class="countdown-number" id="cd-secs">00</div>
+              <div class="countdown-label">Segundos</div>
+            </div>
+          </div>
+
+          <p style="font-size:1rem; color:var(--pink-light); font-style:italic; margin-bottom:16px;">
+            ¡Prepara tu corazón para entrar al bosque encantado de Daphne!
+          </p>
+
+          <a id="add-calendar-btn" href="#" target="_blank" rel="noopener" class="btn-outline-pink">
+            <span>📅</span>
+            <span>Agendar en mi Calendario</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- 4. LUGAR Y RECEPCIÓN: SALÓN TOSCANA JARDÍN DE EVENTOS -->
+      <section class="section reveal">
+        <div class="enchanted-card">
+          <svg class="card-corner-floral top-left"><use href="#pink-floral-corner"></use></svg>
+          <svg class="card-corner-floral bottom-right"><use href="#pink-floral-corner"></use></svg>
+          <svg class="perched-butterfly left"><use href="#golden-butterfly"></use></svg>
+
+          <div class="venue-icon-wrap">
+            <svg width="36" height="36" viewBox="0 0 40 40">
+              <use href="#magic-star" x="2" y="2" width="36" height="36" />
+            </svg>
+          </div>
+
+          <h3 class="section-script-title">Lugar de la Celebración</h3>
+          <p class="section-subtitle">Recepción &amp; Velada Mágica</p>
+
+          <h4 class="venue-name">Salón Toscana<br />Jardín de Eventos</h4>
+
+          <span class="venue-highlight-pill">20 de Marzo de 2027 • 7:00 PM</span>
+
+          <p class="venue-details">
+            Un jardín rodeado de naturaleza, luces estelares y magia donde celebraremos juntos esta noche tan especial para Daphne.
+          </p>
+
+          <a id="maps-btn" href="https://www.google.com/maps/search/?api=1&query=Salon+Toscana+Jardin+de+Eventos" target="_blank" rel="noopener" class="btn-gold">
+            <span>📍</span>
+            <span>Ver Mapa en Google Maps</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- 5. ITINERARIO DE LA NOCHE -->
+      <section class="section reveal">
+        <div class="enchanted-card">
+          <svg class="card-corner-floral top-left"><use href="#pink-floral-corner"></use></svg>
+          <svg class="card-corner-floral bottom-right"><use href="#pink-floral-corner"></use></svg>
+
+          <h3 class="section-script-title">Noche Encantada</h3>
+          <p class="section-subtitle">Momentos Mágicos</p>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-side">
+                <div class="timeline-time">7:00 PM</div>
+                <div class="timeline-event">Recepción</div>
+              </div>
+              <div class="timeline-dot">🌸</div>
+              <div class="timeline-side right" style="font-size:0.88rem; color:var(--text-muted);">
+                Bienvenida al jardín encantado
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-side" style="font-size:0.88rem; color:var(--text-muted);">
+                El vuelo de las mariposas doradas
+              </div>
+              <div class="timeline-dot">🦋</div>
+              <div class="timeline-side right">
+                <div class="timeline-time">8:00 PM</div>
+                <div class="timeline-event">Entrada y Vals</div>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-side">
+                <div class="timeline-time">8:45 PM</div>
+                <div class="timeline-event">Brindis y Cena</div>
+              </div>
+              <div class="timeline-dot">🥂</div>
+              <div class="timeline-side right" style="font-size:0.88rem; color:var(--text-muted);">
+                Banquete bajo las estrellas
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-side" style="font-size:0.88rem; color:var(--text-muted);">
+                Música, baile y diversión
+              </div>
+              <div class="timeline-dot">✨</div>
+              <div class="timeline-side right">
+                <div class="timeline-time">10:00 PM</div>
+                <div class="timeline-event">¡A Bailar!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. CÓDIGO DE VESTIMENTA Y DETALLES -->
+      <section class="section reveal">
+        <div class="enchanted-card">
+          <svg class="card-corner-floral top-left"><use href="#pink-floral-corner"></use></svg>
+          <svg class="card-corner-floral bottom-right"><use href="#pink-floral-corner"></use></svg>
+          <svg class="perched-butterfly right"><use href="#golden-butterfly"></use></svg>
+
+          <h3 class="section-script-title">Código de Vestimenta</h3>
+          <p class="section-subtitle">Formal • Elegante</p>
+
+          <p style="font-size:1.05rem; color:var(--text-soft); line-height:1.55; margin-bottom:14px;">
+            Tu presencia hará brillar aún más esta velada.
+          </p>
+
+          <div class="parents-box" style="margin-bottom:18px;">
+            <p class="parents-label" style="font-size:0.74rem; margin-bottom:8px;">Colores reservados para la Quinceañera</p>
+            <div class="swatch-row">
+              <div class="color-swatch">
+                <span class="swatch-circle" style="background: linear-gradient(135deg, #1b593c, #0a291a);"></span>
+                <span>Verde Bosque</span>
+              </div>
+              <div class="color-swatch">
+                <span class="swatch-circle" style="background: linear-gradient(135deg, #fde8ef, #ee95b1);"></span>
+                <span>Rosa Pastel</span>
+              </div>
+            </div>
+          </div>
+
+          <hr style="border:none; border-top:1px solid var(--gold-border); margin:20px 0;" />
+
+          <h3 class="section-script-title" style="font-size:2.4rem;">Sugerencia de Regalo</h3>
+          <p class="section-subtitle">✉️ Lluvia de Sobres ✉️</p>
+          <p style="font-size:1.02rem; color:var(--text-soft); line-height:1.55;">
+            Mi mejor regalo es compartir contigo esta noche mágica, pero si deseas tener un detalle conmigo, habrá un cofre encantado en la entrada para recibir tu sobre.
+          </p>
+        </div>
+      </section>
+
+      <!-- 7. CONFIRMACIÓN DE ASISTENCIA (RSVP PARA CELULAR) -->
+      <section class="section reveal" id="rsvp-section">
+        <div class="enchanted-card">
+          <svg class="card-corner-floral top-left"><use href="#pink-floral-corner"></use></svg>
+          <svg class="card-corner-floral bottom-right"><use href="#pink-floral-corner"></use></svg>
+          <svg class="perched-butterfly left"><use href="#golden-butterfly"></use></svg>
+
+          <h3 class="section-script-title">Confirmar Asistencia</h3>
+          <p class="section-subtitle">Esperamos contar contigo</p>
+
+          <p style="font-size:1rem; color:var(--text-soft); line-height:1.5;">
+            Por favor ayúdanos confirmando tu asistencia para preparar tu lugar en el Bosque Encantado.
+          </p>
+
+          <form id="rsvp-form" class="rsvp-form">
+            <div class="form-group">
+              <label for="guest-name">Nombre de Familia o Invitado(s)</label>
+              <input type="text" id="guest-name" class="form-control" placeholder="Ej. Familia García López" required />
+            </div>
+
+            <div class="form-group">
+              <label for="guest-count">Número de personas que asisten</label>
+              <select id="guest-count" class="form-control">
+                <option value="1 persona">1 persona</option>
+                <option value="2 personas" selected>2 personas</option>
+                <option value="3 personas">3 personas</option>
+                <option value="4 personas">4 personas</option>
+                <option value="5 personas">5 personas</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="guest-status">¿Nos acompañarás?</label>
+              <select id="guest-status" class="form-control">
+                <option value="¡Sí, ahí estaremos con mucha alegría! ✨">✨ ¡Sí, ahí estaremos con mucha alegría!</option>
+                <option value="No podremos asistir, pero enviamos un gran abrazo 💖">💖 No podremos asistir, enviamos un abrazo</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="guest-message">Dedícale unas palabras a Daphne (Opcional)</label>
+              <textarea id="guest-message" rows="2" class="form-control" placeholder="¡Muchas felicidades Daphne por tus XV años!"></textarea>
+            </div>
+
+            <button type="submit" class="btn-gold" style="max-width:100%; margin-top:6px;">
+              <span>💬</span>
+              <span>Confirmar por WhatsApp</span>
+            </button>
+          </form>
+
+          <div id="rsvp-feedback" style="display:none; margin-top:16px; padding:14px; border-radius:14px; background:rgba(247, 194, 210, 0.15); border:1px solid var(--pink-rose); color:var(--pink-light); font-size:0.95rem;">
+          </div>
+        </div>
+      </section>
+
+      <!-- PIE DE PÁGINA -->
+      <footer class="footer-section reveal">
+        <svg width="70" height="70" style="filter:drop-shadow(0 0 10px rgba(245,223,152,0.5)); animation: flutterWings 2.8s infinite;">
+          <use href="#golden-butterfly"></use>
+        </svg>
+        <div class="footer-monogram">Daphne</div>
+        <p style="font-family:var(--font-sans); font-size:0.75rem; letter-spacing:0.22em; color:var(--pink-blush); text-transform:uppercase; margin-top:4px;">
+          Mis XV Años • 20 . 03 . 2027
+        </p>
+        <p style="font-size:0.9rem; color:var(--text-muted); margin-top:8px;">
+          Laura &amp; Jonas • Salón Toscana Jardín de Eventos
+        </p>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       MODAL PARA VER EN EL CELULAR (CÓDIGO QR AUTOMÁTICO)
+       ======================================================================== -->
+  <div id="qr-modal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-card">
+      <button id="qr-close-btn" class="modal-close" aria-label="Cerrar">✕</button>
+      <h3 class="section-script-title" style="font-size:2.4rem;">Ver en tu Celular</h3>
+      <p style="font-family:var(--font-sans); font-size:0.8rem; color:var(--pink-blush); margin-bottom:10px;">
+        Conecta tu celular al mismo Wi-Fi de esta computadora y escanea el código QR con tu cámara:
+      </p>
+
+      <div class="qr-box">
+        <img id="qr-image" src="" alt="Código QR para abrir en celular" width="190" height="190" style="display:block;" />
+      </div>
+
+      <p style="font-family:var(--font-sans); font-size:0.75rem; color:var(--text-soft);">
+        O escribe esta dirección en el navegador de tu celular:
+      </p>
+      <div id="local-url-display" class="url-pill">http://192.168.1.71:8080</div>
+
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-top:8px; line-height:1.4;">
+        💡 Cuando subas esta carpeta a tu servidor propio, el código QR apuntará automáticamente a tu dominio web.
+      </p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
