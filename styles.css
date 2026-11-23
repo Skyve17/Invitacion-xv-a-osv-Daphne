@@ -1131,3 +1131,128 @@ body {
   0%, 100% { transform: scaleY(0.4); }
   50% { transform: scaleY(1.1); }
 }
+
+
+/* ==========================================================================
+   PASE PERSONALIZADO / BOLETO DORADO DEL BOSQUE ENCANTADO
+   ========================================================================== */
+.envelope-guest-badge {
+  background: linear-gradient(135deg, rgba(20, 62, 42, 0.92) 0%, rgba(8, 28, 19, 0.96) 100%);
+  border: 1.5px solid var(--gold-primary);
+  border-radius: 18px;
+  padding: 12px 20px;
+  margin: 4px 0 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 18px rgba(216, 175, 73, 0.25);
+  width: 100%;
+  max-width: 310px;
+}
+
+.envelope-guest-label {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pink-blush);
+  margin-bottom: 4px;
+}
+
+.envelope-guest-name {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  line-height: 1.2;
+}
+
+.envelope-guest-passes {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: rgba(216, 175, 73, 0.18);
+  border: 1px solid rgba(216, 175, 73, 0.5);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--gold-champagne);
+}
+
+/* Boleto Dorado dentro de la Invitación */
+.golden-ticket-card {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(155deg, rgba(22, 68, 46, 0.92) 0%, rgba(7, 26, 17, 0.96) 100%);
+  border: 2px solid var(--gold-primary);
+  border-radius: 22px;
+  padding: 28px 20px 24px;
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.65),
+    0 0 28px rgba(216, 175, 73, 0.22),
+    inset 0 0 22px rgba(245, 223, 152, 0.12);
+}
+
+.golden-ticket-card::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border-radius: 15px;
+  border: 1px dashed rgba(245, 223, 152, 0.45);
+  pointer-events: none;
+}
+
+.ticket-guest-name {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  margin: 6px 0 12px;
+  text-shadow: 0 2px 12px rgba(216, 175, 73, 0.35);
+}
+
+.ticket-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 12px 0 16px;
+}
+
+.ticket-badge {
+  background: rgba(6, 20, 13, 0.75);
+  border: 1.5px solid var(--gold-primary);
+  border-radius: 14px;
+  padding: 10px 16px;
+  min-width: 130px;
+}
+
+.ticket-badge-num {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 700;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ticket-badge-label {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pink-blush);
+  margin-top: 2px;
+}
+
+.rsvp-pass-banner {
+  background: rgba(216, 175, 73, 0.14);
+  border: 1px solid var(--gold-primary);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 12px 0 6px;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: var(--gold-light);
+  text-align: center;
+}

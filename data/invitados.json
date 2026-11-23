@@ -1,0 +1,32 @@
+{
+  "config": {
+    "googleSheetsWebhookUrl": "",
+    "adminPin": ""
+  },
+  "invitados": [
+    {
+      "codigo": "lizbeth",
+      "nombre": "Lizbeth",
+      "pasesAsignados": 4,
+      "mesa": "Mesa 1",
+      "telefono": "",
+      "estado": "Pendiente",
+      "pasesConfirmados": 0,
+      "nombresAsistentes": "",
+      "mensaje": "",
+      "fechaConfirmacion": ""
+    },
+    {
+      "codigo": "familia-garcia",
+      "nombre": "Familia García",
+      "pasesAsignados": 2,
+      "mesa": "Mesa 2",
+      "telefono": "",
+      "estado": "Pendiente",
+      "pasesConfirmados": 0,
+      "nombresAsistentes": "",
+      "mensaje": "",
+      "fechaConfirmacion": ""
+    }
+  ]
+}

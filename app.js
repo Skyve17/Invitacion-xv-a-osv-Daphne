@@ -1,7 +1,9 @@
 /**
  * ============================================================================
  * MIS XV AÑOS - DAPHNE | BOSQUE ENCANTADO
- * Configuración general, animación de Estrellas, Mariposas Doradas y Flores Rositas
+ * - Pases personalizados (?i=lizbeth o ?p=token)
+ * - Confirmación automática guardada en el servidor + Excel (.xlsx) + Google Sheets
+ * - Melodía de vals, cuenta regresiva y motor de partículas del bosque encantado
  * ============================================================================
  */
 
@@ -11,16 +13,18 @@ const CONFIG = {
   // Fecha del evento: 20 de Marzo de 2027 a las 19:00 hrs
   fechaEventoISO: '2027-03-20T19:00:00',
   lugarNombre: 'Salón Toscana Jardín de Eventos',
-  // Link de Google Maps (puedes pegar aquí el link exacto de Google Maps de tu salón)
+  // Link de Google Maps
   googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Salon+Toscana+Jardin+de+Eventos',
-  // Número de WhatsApp para recibir confirmaciones (con código de país, ej. 5215512345678 para México).
-  // Si se deja vacío (''), abrirá WhatsApp permitiendo elegir el contacto o mostrará confirmación en pantalla.
+  // Teléfono opcional para saludo extra por WhatsApp
   telefonoWhatsApp: '',
-  // IP local detectada en tu red Wi-Fi para previsualizar en el celular
+  // IP local por defecto (se actualiza automáticamente desde /api/network-info)
   ipLocalWiFi: 'http://192.168.1.71:8080'
 };
 
+let currentGuest = null;
+
 document.addEventListener('DOMContentLoaded', () => {
+  initPersonalizedPass();
   initEnvelopeAndMusic();
   initCountdown();
   initCalendarAndMaps();
@@ -31,7 +35,165 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ============================================================================
-   1. APERTURA DEL SOBRE Y MELODÍA DE VALS ENCANTADO (WEB AUDIO / MP3)
+   0. CARGA DE PASE PERSONALIZADO (EJ. ?i=lizbeth -> PASE PARA 4 PERSONAS)
+   ============================================================================ */
+async function initPersonalizedPass() {
+  const params = new URLSearchParams(window.location.search);
+  const codeParam = params.get('i') || params.get('id') || params.get('codigo');
+  const encodedParam = params.get('p');
+  const directName = params.get('invitado') || params.get('nombre');
+  const directPasses = params.get('pases');
+
+  // 1) Si viene un código de invitado (?i=lizbeth), consultamos al servidor
+  if (codeParam) {
+    try {
+      const res = await fetch(`/api/invitado/${encodeURIComponent(codeParam)}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.found && data.invitado) {
+          applyGuestData(data.invitado);
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('Modo sin conexión al consultar invitado:', err);
+    }
+  }
+
+  // 2) Si viene un token codificado en Base64 (?p=...)
+  if (encodedParam) {
+    try {
+      const decoded = decodeURIComponent(escape(atob(encodedParam)));
+      const [nombre, pases, mesa, codigo] = decoded.split('|');
+      if (nombre) {
+        applyGuestData({
+          codigo: codigo || nombre,
+          nombre: nombre.trim(),
+          pasesAsignados: Math.max(1, Number(pases) || 2),
+          mesa: (mesa || '').trim(),
+          estado: 'Pendiente'
+        });
+        return;
+      }
+    } catch (e) {
+      console.warn('Token ?p inválido:', e);
+    }
+  }
+
+  // 3) Si vienen parámetros directos (?invitado=Lizbeth&pases=4)
+  if (directName) {
+    applyGuestData({
+      codigo: codeParam || directName,
+      nombre: directName.trim(),
+      pasesAsignados: Math.max(1, Number(directPasses) || 2),
+      mesa: params.get('mesa') || '',
+      estado: 'Pendiente'
+    });
+  }
+}
+
+function applyGuestData(guest) {
+  currentGuest = guest;
+  const maxPasses = Math.max(1, Number(guest.pasesAsignados) || 1);
+  const passText = maxPasses === 1 ? '1 persona' : `${maxPasses} personas`;
+  const passBadgeText = maxPasses === 1 ? '1 Persona' : `${maxPasses} Personas`;
+
+  // 1) Mostrar en el Sobre Mágico de entrada
+  const envBox = document.getElementById('envelope-guest-box');
+  const envName = document.getElementById('envelope-guest-name');
+  const envPasses = document.getElementById('envelope-guest-passes');
+  if (envBox && envName && envPasses) {
+    envName.textContent = guest.nombre;
+    envPasses.textContent = `🎟️ Pase reservado para ${passText}`;
+    envBox.style.display = 'block';
+  }
+
+  // 2) Mostrar la sección de Boleto Dorado dentro de la invitación
+  const ticketSection = document.getElementById('guest-ticket-section');
+  const ticketName = document.getElementById('ticket-guest-name');
+  const ticketPasses = document.getElementById('ticket-passes-num');
+  const ticketMesaBox = document.getElementById('ticket-mesa-box');
+  const ticketMesaNum = document.getElementById('ticket-mesa-num');
+  const ticketStatus = document.getElementById('ticket-status-text');
+
+  if (ticketSection) {
+    ticketSection.style.display = 'flex';
+    if (ticketName) ticketName.textContent = guest.nombre;
+    if (ticketPasses) ticketPasses.textContent = passBadgeText;
+
+    if (ticketMesaBox && ticketMesaNum && guest.mesa) {
+      ticketMesaNum.textContent = guest.mesa;
+      ticketMesaBox.style.display = 'block';
+    }
+
+    if (ticketStatus) {
+      if (guest.estado === 'Confirmado') {
+        const confTxt =
+          guest.pasesConfirmados === 1 ? '1 persona confirmada' : `${guest.pasesConfirmados} personas confirmadas`;
+        ticketStatus.innerHTML = `✅ <strong>¡Asistencia ya confirmada!</strong> (${confTxt}). Puedes actualizar tus datos abajo si lo necesitas.`;
+      } else if (guest.estado === 'No asistirá') {
+        ticketStatus.innerHTML = `💖 Registraste que no podrás asistir. Si tus planes cambiaron, puedes actualizar tu confirmación abajo.`;
+      }
+    }
+  }
+
+  // 3) Configurar y bloquear límites en el formulario de Confirmación (RSVP)
+  const banner = document.getElementById('rsvp-pass-banner');
+  const bannerName = document.getElementById('banner-guest-name');
+  const bannerMax = document.getElementById('banner-guest-max');
+  const inputCode = document.getElementById('guest-code');
+  const inputMax = document.getElementById('guest-max-passes');
+  const inputName = document.getElementById('guest-name');
+  const selectCount = document.getElementById('guest-count');
+  const selectStatus = document.getElementById('guest-status');
+  const inputCompanions = document.getElementById('guest-companions');
+  const inputMsg = document.getElementById('guest-message');
+
+  if (banner && bannerName && bannerMax) {
+    bannerName.textContent = guest.nombre;
+    bannerMax.textContent = maxPasses;
+    banner.style.display = 'block';
+  }
+
+  if (inputCode) inputCode.value = guest.codigo || guest.nombre;
+  if (inputMax) inputMax.value = String(maxPasses);
+
+  if (inputName) {
+    inputName.value = guest.nombre;
+    inputName.readOnly = true;
+    inputName.style.opacity = '0.92';
+  }
+
+  // Llenar el selector solo de 1 hasta maxPasses (para que no puedan ponerse más pases)
+  if (selectCount) {
+    selectCount.innerHTML = '';
+    const defaultSelected =
+      guest.estado === 'Confirmado' && guest.pasesConfirmados > 0 ? Number(guest.pasesConfirmados) : maxPasses;
+
+    for (let i = 1; i <= maxPasses; i++) {
+      const opt = document.createElement('option');
+      opt.value = String(i);
+      const label = i === 1 ? '1 persona' : `${i} personas`;
+      opt.textContent = i === maxPasses && maxPasses > 1 ? `${label} (Pase completo)` : label;
+      if (i === defaultSelected) opt.selected = true;
+      selectCount.appendChild(opt);
+    }
+  }
+
+  if (selectStatus && guest.estado === 'No asistirá') {
+    selectStatus.value = 'no';
+    selectStatus.dispatchEvent(new Event('change'));
+  }
+  if (inputCompanions && guest.nombresAsistentes) {
+    inputCompanions.value = guest.nombresAsistentes;
+  }
+  if (inputMsg && guest.mensaje) {
+    inputMsg.value = guest.mensaje;
+  }
+}
+
+/* ============================================================================
+   1. APERTURA DEL SOBRE Y MELODÍA DE VALS ENCANTADO (WEB AUDIO)
    ============================================================================ */
 let isMusicPlaying = false;
 let audioCtx = null;
@@ -45,7 +207,6 @@ function initEnvelopeAndMusic() {
   if (openBtn && envelope) {
     openBtn.addEventListener('click', () => {
       envelope.classList.add('opened');
-      // Disparamos una lluvia mágica de mariposas doradas y pétalos rositas al abrir
       if (window.triggerMagicBurst) {
         window.triggerMagicBurst();
       }
@@ -80,16 +241,15 @@ function startEnchantedMusic() {
     isMusicPlaying = true;
     if (musicBtn) musicBtn.classList.add('playing');
 
-    // Notas de una cajita musical / arpa de vals de hadas (compás 3/4 suave)
     const notes = [
-      523.25, 659.25, 783.99, // Do5, Mi5, Sol5
-      987.77, 783.99, 659.25, // Si5, Sol5, Mi5
-      587.33, 698.46, 880.00, // Re5, Fa5, La5
-      1046.50, 880.00, 698.46,// Do6, La5, Fa5
-      493.88, 587.33, 783.99, // Si4, Re5, Sol5
-      987.77, 783.99, 587.33, // Si5, Sol5, Re5
-      523.25, 659.25, 783.99, // Do5, Mi5, Sol5
-      1046.50, 783.99, 659.25 // Do6, Sol5, Mi5
+      523.25, 659.25, 783.99,
+      987.77, 783.99, 659.25,
+      587.33, 698.46, 880.00,
+      1046.50, 880.00, 698.46,
+      493.88, 587.33, 783.99,
+      987.77, 783.99, 587.33,
+      523.25, 659.25, 783.99,
+      1046.50, 783.99, 659.25
     ];
 
     let step = 0;
@@ -104,7 +264,6 @@ function startEnchantedMusic() {
       osc.type = 'sine';
       osc.frequency.setValueAtTime(freq, now);
 
-      // Envolvente suave tipo cajita de música / celesta
       gain.gain.setValueAtTime(0.0001, now);
       gain.gain.exponentialRampToValueAtTime(0.032, now + 0.04);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.4);
@@ -121,7 +280,7 @@ function startEnchantedMusic() {
     playChime();
     melodyTimer = setInterval(playChime, 520);
   } catch (e) {
-    console.warn('Audio bloqueado por el navegador hasta interacción:', e);
+    console.warn('Audio bloqueado hasta interacción:', e);
   }
 }
 
@@ -181,7 +340,6 @@ function initCalendarAndMaps() {
       `Laura y Jonas te invitan a celebrar los XV años de ${CONFIG.quinceanera} en ${CONFIG.lugarNombre}. ¡Te esperamos!`
     );
     const location = encodeURIComponent(CONFIG.lugarNombre);
-    // 20 de Marzo de 2027 de 19:00 a 23:59
     const dates = '20270320T190000/20270321T020000';
     calBtn.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
   }
@@ -200,69 +358,150 @@ function initScrollReveal() {
         }
       });
     },
-    { threshold: 0.14 }
+    { threshold: 0.08 }
   );
 
   reveals.forEach((el) => observer.observe(el));
 }
 
 /* ============================================================================
-   5. CONFIRMACIÓN DE ASISTENCIA (WHATSAPP)
+   5. CONFIRMACIÓN DE ASISTENCIA AUTOMÁTICA (SE GUARDA EN SERVIDOR Y EXCEL)
    ============================================================================ */
 function initRsvpForm() {
   const form = document.getElementById('rsvp-form');
   const feedback = document.getElementById('rsvp-feedback');
+  const statusSelect = document.getElementById('guest-status');
+  const countGroup = document.getElementById('guest-count-group');
+  const companionsGroup = document.getElementById('guest-companions-group');
+  const submitBtn = document.getElementById('rsvp-submit-btn');
 
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  // Ocultar selector de cantidad si elige que NO podrá asistir
+  if (statusSelect) {
+    statusSelect.addEventListener('change', () => {
+      const asistira = statusSelect.value === 'si';
+      if (countGroup) countGroup.style.display = asistira ? 'block' : 'none';
+      if (companionsGroup) companionsGroup.style.display = asistira ? 'block' : 'none';
+    });
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const name = document.getElementById('guest-name').value.trim();
-    const count = document.getElementById('guest-count').value;
-    const status = document.getElementById('guest-status').value;
-    const msg = document.getElementById('guest-message').value.trim();
 
-    if (!name) return;
+    const codigo = document.getElementById('guest-code')?.value || '';
+    const pasesAsignados = Number(document.getElementById('guest-max-passes')?.value) || 5;
+    const nombre = document.getElementById('guest-name').value.trim();
+    const asistira = document.getElementById('guest-status').value;
+    const pasesConfirmados = asistira === 'si' ? Number(document.getElementById('guest-count').value) : 0;
+    const nombresAsistentes = document.getElementById('guest-companions')?.value.trim() || '';
+    const mensaje = document.getElementById('guest-message').value.trim();
 
-    const textLines = [
-      `🦋 *CONFIRMACIÓN MIS XV AÑOS - DAPHNE* 🌸`,
-      `----------------------------------`,
-      `👤 *Invitado/Familia:* ${name}`,
-      `🎟️ *Pases confirmados:* ${count}`,
-      `✨ *Respuesta:* ${status}`,
-      `📅 *Fecha:* 20 de Marzo de 2027`,
-      `📍 *Lugar:* ${CONFIG.lugarNombre}`
-    ];
+    if (!nombre) return;
 
-    if (msg) {
-      textLines.push(`💌 *Mensaje para Daphne:* "${msg}"`);
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>⏳</span><span>Guardando tu confirmación...</span>';
     }
 
-    const encodedMsg = encodeURIComponent(textLines.join('\n'));
-    const phone = CONFIG.telefonoWhatsApp.replace(/\D/g, '');
-    const waUrl = phone
-      ? `https://wa.me/${phone}?text=${encodedMsg}`
-      : `https://api.whatsapp.com/send?text=${encodedMsg}`;
+    try {
+      const response = await fetch('/api/confirmar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          codigo,
+          nombre,
+          asistira,
+          pasesConfirmados,
+          pasesAsignados,
+          nombresAsistentes,
+          mensaje
+        })
+      });
 
-    if (feedback) {
-      feedback.style.display = 'block';
-      feedback.innerHTML = `✨ <strong>¡Gracias, ${name}!</strong> Abriendo WhatsApp con tu confirmación lista para enviar a Laura y Jonas...`;
+      const result = await response.json();
+
+      if (window.triggerMagicBurst) {
+        window.triggerMagicBurst();
+      }
+
+      if (result.ok) {
+        const personaTxt =
+          pasesConfirmados === 1 ? '1 persona confirmada' : `${pasesConfirmados} personas confirmadas`;
+
+        // Actualizar texto del boleto si está visible
+        const ticketStatus = document.getElementById('ticket-status-text');
+        if (ticketStatus) {
+          ticketStatus.innerHTML =
+            asistira === 'si'
+              ? `✅ <strong>¡Asistencia confirmada!</strong> (${personaTxt})`
+              : `💖 Gracias por avisarnos. Te enviamos un gran abrazo.`;
+        }
+
+        // Preparar link opcional de WhatsApp por si además desea mandar mensaje
+        const waLines = [
+          `🦋 *CONFIRMACIÓN MIS XV AÑOS - DAPHNE* 🌸`,
+          `👤 *Invitado:* ${nombre}`,
+          asistira === 'si'
+            ? `✅ *Asistencia:* ¡Sí asistiré! (${personaTxt})`
+            : `💖 *Asistencia:* No podré asistir, envío muchas felicitaciones`,
+          mensaje ? `💌 *Mensaje:* "${mensaje}"` : ''
+        ].filter(Boolean);
+
+        const phone = CONFIG.telefonoWhatsApp.replace(/\D/g, '');
+        const waUrl = phone
+          ? `https://wa.me/${phone}?text=${encodeURIComponent(waLines.join('\n'))}`
+          : `https://api.whatsapp.com/send?text=${encodeURIComponent(waLines.join('\n'))}`;
+
+        if (feedback) {
+          feedback.style.display = 'block';
+          feedback.innerHTML =
+            asistira === 'si'
+              ? `
+                <div style="font-size:1.8rem; margin-bottom:6px;">🦋✨🌸</div>
+                <h4 style="font-family:var(--font-display); color:var(--gold-light); font-size:1.05rem; margin-bottom:6px;">
+                  ¡Confirmación Guardada con Éxito!
+                </h4>
+                <p style="color:var(--text-soft); line-height:1.5; margin-bottom:12px;">
+                  Muchas gracias, <strong>${nombre}</strong>. Hemos registrado tus <strong>${personaTxt}</strong> en nuestra lista de invitados para el 20 de Marzo de 2027.
+                </p>
+                <a href="${waUrl}" target="_blank" rel="noopener" class="btn-outline-pink" style="font-size:0.74rem; padding:10px 16px;">
+                  <span>💬</span>
+                  <span>Enviar también saludo por WhatsApp (Opcional)</span>
+                </a>
+              `
+              : `
+                <div style="font-size:1.6rem; margin-bottom:6px;">💖🌸</div>
+                <h4 style="font-family:var(--font-display); color:var(--gold-light); font-size:1rem; margin-bottom:6px;">
+                  Respuesta Registrada
+                </h4>
+                <p style="color:var(--text-soft); line-height:1.5;">
+                  Muchas gracias por avisarnos, <strong>${nombre}</strong>. Guardamos tu respuesta y tu mensaje con mucho cariño para Daphne.
+                </p>
+              `;
+        }
+      } else {
+        throw new Error(result.error || 'Error al guardar');
+      }
+    } catch (err) {
+      console.error('Error guardando confirmación:', err);
+      if (feedback) {
+        feedback.style.display = 'block';
+        feedback.innerHTML = `⚠️ Hubo un detalle de conexión. Por favor intenta de nuevo en unos segundos.`;
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>✨</span><span>Actualizar mi Confirmación</span>';
+      }
     }
-
-    if (window.triggerMagicBurst) {
-      window.triggerMagicBurst();
-    }
-
-    setTimeout(() => {
-      window.open(waUrl, '_blank', 'noopener');
-    }, 450);
   });
 }
 
 /* ============================================================================
    6. MODAL DE VISTA EN CELULAR (CÓDIGO QR AUTOMÁTICO)
    ============================================================================ */
-function initQrPreviewModal() {
+async function initQrPreviewModal() {
   const openBtn = document.getElementById('qr-open-btn');
   const closeBtn = document.getElementById('qr-close-btn');
   const modal = document.getElementById('qr-modal');
@@ -271,11 +510,22 @@ function initQrPreviewModal() {
 
   if (!modal) return;
 
-  // Si estamos en localhost, mostramos la IP Wi-Fi local para que el celular pueda entrar
+  let baseHostUrl = CONFIG.ipLocalWiFi;
+  try {
+    const netRes = await fetch('/api/network-info');
+    if (netRes.ok) {
+      const netData = await netRes.json();
+      if (netData.localUrl) baseHostUrl = netData.localUrl;
+    }
+  } catch (e) {
+    // Usar IP configurada por defecto
+  }
+
   const currentHost = window.location.hostname;
+  const searchPart = window.location.search || '';
   const targetUrl =
     currentHost === 'localhost' || currentHost === '127.0.0.1'
-      ? CONFIG.ipLocalWiFi
+      ? `${baseHostUrl}/${searchPart}`
       : window.location.href;
 
   if (urlDisplay) {
@@ -328,7 +578,6 @@ function initEnchantedForestCanvas() {
   resize();
   window.addEventListener('resize', resize);
 
-  // 1) Estrellas doradas en el bosque
   const stars = Array.from({ length: 38 }, () => ({
     x: Math.random() * width,
     y: Math.random() * height,
@@ -338,10 +587,7 @@ function initEnchantedForestCanvas() {
     isFourPoint: Math.random() > 0.45
   }));
 
-  // 2) Pétalos de flores rositas cayendo suavemente
   const petals = Array.from({ length: 16 }, () => createPetal(width, height, true));
-
-  // 3) Mariposas doradas mágicas volando
   const butterflies = Array.from({ length: 6 }, () => createButterfly(width, height, true));
 
   function createPetal(w, h, randomY = false) {
@@ -372,7 +618,6 @@ function initEnchantedForestCanvas() {
     };
   }
 
-  // Función pública para disparar una ráfaga de magia al abrir el sobre o confirmar
   window.triggerMagicBurst = () => {
     for (let i = 0; i < 10; i++) {
       const b = createButterfly(width, height, false);
@@ -432,17 +677,14 @@ function initEnchantedForestCanvas() {
     ctx.shadowColor = 'rgba(216, 175, 73, 0.9)';
     ctx.shadowBlur = 10;
 
-    // Ala izquierda
     ctx.beginPath();
     ctx.ellipse(-b.size * 0.65 * wingSpread, -1, b.size * wingSpread, b.size * 0.65, -0.35, 0, Math.PI * 2);
     ctx.fill();
 
-    // Ala derecha
     ctx.beginPath();
     ctx.ellipse(b.size * 0.65 * wingSpread, -1, b.size * wingSpread, b.size * 0.65, 0.35, 0, Math.PI * 2);
     ctx.fill();
 
-    // Cuerpo dorado brillante
     ctx.fillStyle = '#fff8dc';
     ctx.beginPath();
     ctx.ellipse(0, 0, 1.2, b.size * 0.55, 0, 0, Math.PI * 2);
@@ -454,7 +696,6 @@ function initEnchantedForestCanvas() {
   function animate() {
     ctx.clearRect(0, 0, width, height);
 
-    // 1. Dibujar estrellas titilantes
     for (const s of stars) {
       s.alpha += s.speed;
       if (s.alpha >= 1 || s.alpha <= 0.15) {
@@ -471,7 +712,6 @@ function initEnchantedForestCanvas() {
       }
     }
 
-    // 2. Actualizar y dibujar pétalos rositas
     for (let i = petals.length - 1; i >= 0; i--) {
       const p = petals[i];
       p.y += p.speedY;
@@ -488,7 +728,6 @@ function initEnchantedForestCanvas() {
       }
     }
 
-    // 3. Actualizar y dibujar mariposas doradas
     for (let i = butterflies.length - 1; i >= 0; i--) {
       const b = butterflies[i];
       b.tick += 1;

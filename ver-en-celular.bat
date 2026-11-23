@@ -1,20 +1,14 @@
 @echo off
 chcp 65001 > nul
-title Invitacion XV Años Daphne - Servidor para Celular
+title Invitacion XV Años Daphne - Servidor Node.js (Pases + Excel)
 cd /d "%~dp0"
 echo ======================================================================
 echo   ✨ INVITACION MIS XV AÑOS - DAPHNE (BOSQUE ENCANTADO) ✨
 echo ======================================================================
 echo.
-echo   1. En esta computadora abre:
-echo      http://localhost:8080
+echo   Iniciando servidor con Pases Personalizados y Exportacion a Excel...
 echo.
-echo   2. En tu CELULAR (conectado al mismo Wi-Fi), abre el navegador en:
-echo      http://192.168.1.71:8080
-echo      (O haz clic en el boton "Ver en mi Celular" en la pantalla para
-echo       escanear el Codigo QR con la camara de tu telefono).
-echo.
-echo ======================================================================
-start http://localhost:8080
-python -m http.server 8080 --bind 0.0.0.0
+start http://localhost:8080/admin.html
+start http://localhost:8080/?i=lizbeth
+node server.js
 pause

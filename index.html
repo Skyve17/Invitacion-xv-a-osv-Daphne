@@ -125,6 +125,14 @@
       <p class="envelope-subtitle">✨ Bienvenidos al Bosque Encantado ✨</p>
       <div class="envelope-xv-badge">MIS XV AÑOS</div>
       <h1 class="envelope-title">Daphne</h1>
+
+      <!-- Insignia de Pase Personalizado en el Sobre -->
+      <div id="envelope-guest-box" class="envelope-guest-badge" style="display:none;">
+        <div class="envelope-guest-label">💌 Invitación Especial Para:</div>
+        <div id="envelope-guest-name" class="envelope-guest-name">Lizbeth</div>
+        <div id="envelope-guest-passes" class="envelope-guest-passes">🎟️ Pase para 4 personas</div>
+      </div>
+
       <p class="envelope-hint">“Donde las flores rositas despiertan, las mariposas doradas guían el camino y las estrellas iluminan mis sueños...”</p>
 
       <button id="open-invitation-btn" class="seal-button" aria-label="Tocar para abrir la invitación">
@@ -234,6 +242,39 @@
           <p style="margin-top:18px; font-size:1.08rem; color:var(--text-soft); line-height:1.55;">
             Tenemos el honor de invitarte a compartir con nosotros una noche mágica e inolvidable.
           </p>
+        </div>
+      </section>
+
+      <!-- 2.5 BOLETO / PASE DORADO PERSONALIZADO (Visible cuando hay invitado asignado) -->
+      <section class="section reveal" id="guest-ticket-section" style="display:none;">
+        <div class="golden-ticket-card">
+          <svg class="card-corner-floral top-left"><use href="#pink-floral-corner"></use></svg>
+          <svg class="card-corner-floral bottom-right"><use href="#pink-floral-corner"></use></svg>
+          <svg class="perched-butterfly right"><use href="#golden-butterfly"></use></svg>
+
+          <p class="section-subtitle" style="margin-bottom:4px;">🎟️ Pase Personal de Invitado 🎟️</p>
+          <h3 class="section-script-title" style="font-size:2.5rem;">Invitación Especial Para</h3>
+          <div id="ticket-guest-name" class="ticket-guest-name">Lizbeth</div>
+
+          <div class="ticket-badges-row">
+            <div class="ticket-badge">
+              <div id="ticket-passes-num" class="ticket-badge-num">4 Personas</div>
+              <div class="ticket-badge-label">Lugares Reservados</div>
+            </div>
+            <div class="ticket-badge" id="ticket-mesa-box" style="display:none;">
+              <div id="ticket-mesa-num" class="ticket-badge-num">Mesa 1</div>
+              <div class="ticket-badge-label">Ubicación</div>
+            </div>
+          </div>
+
+          <p id="ticket-status-text" style="font-size:0.95rem; color:var(--pink-light); margin-bottom:14px; font-style:italic;">
+            ✨ Hemos reservado estos lugares especialmente para ti en nuestro Bosque Encantado.
+          </p>
+
+          <a href="#rsvp-section" class="btn-gold">
+            <span>✨</span>
+            <span>Confirmar mi Asistencia</span>
+          </a>
         </div>
       </section>
 
@@ -403,7 +444,7 @@
         </div>
       </section>
 
-      <!-- 7. CONFIRMACIÓN DE ASISTENCIA (RSVP PARA CELULAR) -->
+      <!-- 7. CONFIRMACIÓN DE ASISTENCIA AUTOMÁTICA (SE GUARDA EN EXCEL) -->
       <section class="section reveal" id="rsvp-section">
         <div class="enchanted-card">
           <svg class="card-corner-floral top-left"><use href="#pink-floral-corner"></use></svg>
@@ -411,35 +452,46 @@
           <svg class="perched-butterfly left"><use href="#golden-butterfly"></use></svg>
 
           <h3 class="section-script-title">Confirmar Asistencia</h3>
-          <p class="section-subtitle">Esperamos contar contigo</p>
+          <p class="section-subtitle">Registro Automático de Invitados</p>
 
           <p style="font-size:1rem; color:var(--text-soft); line-height:1.5;">
-            Por favor ayúdanos confirmando tu asistencia para preparar tu lugar en el Bosque Encantado.
+            Por favor confirma aquí mismo si nos acompañarás y cuántas personas asistirán. Tu respuesta quedará registrada automáticamente en nuestra lista.
           </p>
 
+          <div id="rsvp-pass-banner" class="rsvp-pass-banner" style="display:none;">
+            🎟️ Pase reservado para <strong id="banner-guest-name">Lizbeth</strong>: hasta <strong id="banner-guest-max">4</strong> personas.
+          </div>
+
           <form id="rsvp-form" class="rsvp-form">
+            <input type="hidden" id="guest-code" value="" />
+            <input type="hidden" id="guest-max-passes" value="5" />
+
             <div class="form-group">
-              <label for="guest-name">Nombre de Familia o Invitado(s)</label>
-              <input type="text" id="guest-name" class="form-control" placeholder="Ej. Familia García López" required />
+              <label for="guest-name">Invitado o Familia</label>
+              <input type="text" id="guest-name" class="form-control" placeholder="Ej. Lizbeth y Familia" required />
             </div>
 
             <div class="form-group">
-              <label for="guest-count">Número de personas que asisten</label>
-              <select id="guest-count" class="form-control">
-                <option value="1 persona">1 persona</option>
-                <option value="2 personas" selected>2 personas</option>
-                <option value="3 personas">3 personas</option>
-                <option value="4 personas">4 personas</option>
-                <option value="5 personas">5 personas</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="guest-status">¿Nos acompañarás?</label>
+              <label for="guest-status">¿Nos acompañarás en esta noche mágica?</label>
               <select id="guest-status" class="form-control">
-                <option value="¡Sí, ahí estaremos con mucha alegría! ✨">✨ ¡Sí, ahí estaremos con mucha alegría!</option>
-                <option value="No podremos asistir, pero enviamos un gran abrazo 💖">💖 No podremos asistir, enviamos un abrazo</option>
+                <option value="si" selected>✨ ¡Sí, ahí estaremos con mucha alegría!</option>
+                <option value="no">💖 No podremos asistir, enviamos un gran abrazo</option>
               </select>
+            </div>
+
+            <div class="form-group" id="guest-count-group">
+              <label for="guest-count">¿Cuántas personas asistirán? (De tu pase)</label>
+              <select id="guest-count" class="form-control">
+                <option value="1">1 persona</option>
+                <option value="2">2 personas</option>
+                <option value="3">3 personas</option>
+                <option value="4" selected>4 personas (Pase completo)</option>
+              </select>
+            </div>
+
+            <div class="form-group" id="guest-companions-group">
+              <label for="guest-companions">Nombres de los asistentes (Opcional)</label>
+              <input type="text" id="guest-companions" class="form-control" placeholder="Ej. Lizbeth, Carlos, Sofía y Mateo" />
             </div>
 
             <div class="form-group">
@@ -447,13 +499,13 @@
               <textarea id="guest-message" rows="2" class="form-control" placeholder="¡Muchas felicidades Daphne por tus XV años!"></textarea>
             </div>
 
-            <button type="submit" class="btn-gold" style="max-width:100%; margin-top:6px;">
-              <span>💬</span>
-              <span>Confirmar por WhatsApp</span>
+            <button type="submit" id="rsvp-submit-btn" class="btn-gold" style="max-width:100%; margin-top:6px;">
+              <span>✨</span>
+              <span>Confirmar mi Asistencia Ahora</span>
             </button>
           </form>
 
-          <div id="rsvp-feedback" style="display:none; margin-top:16px; padding:14px; border-radius:14px; background:rgba(247, 194, 210, 0.15); border:1px solid var(--pink-rose); color:var(--pink-light); font-size:0.95rem;">
+          <div id="rsvp-feedback" style="display:none; margin-top:16px; padding:18px 16px; border-radius:16px; background:rgba(20, 62, 42, 0.92); border:1.5px solid var(--gold-primary); color:var(--text-cream); font-size:0.95rem; text-align:center;">
           </div>
         </div>
       </section>

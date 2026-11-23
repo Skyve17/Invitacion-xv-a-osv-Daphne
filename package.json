@@ -1,0 +1,13 @@
+{
+  "name": "invitacion-xv-a-osv-daphne",
+  "version": "1.0.0",
+  "description": "Invitación Digital de XV Años para Daphne - Bosque Encantado con Pases Personalizados y Exportación a Excel",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "express": "^5.1.0"
+  }
+}
